@@ -24,6 +24,10 @@ const getUser = (req, res) => {
         res.status(err.statusCode).send({ message: err.message });
         return;
       }
+      if (err.name === 'CastError') {
+        res.status(BAD_REQUEST).send({ message: 'Передан некорректный _id' });
+        return;
+      }
       res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
     });
 };

@@ -37,6 +37,10 @@ const deleteCard = (req, res) => {
         res.status(err.statusCode).send({ message: err.message });
         return;
       }
+      if (err.name === 'CastError') {
+        res.status(BAD_REQUEST).send({ message: 'Некорректный _id карточки' });
+        return;
+      }
       res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
     });
 };
@@ -54,6 +58,10 @@ const likeCard = (req, res) => {
         res.status(err.statusCode).send({ message: err.message });
         return;
       }
+      if (err.name === 'CastError') {
+        res.status(BAD_REQUEST).send({ message: 'Некорректный _id карточки' });
+        return;
+      }
       res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
     });
 };
@@ -69,6 +77,10 @@ const dislikeCard = (req, res) => {
     .catch((err) => {
       if (err instanceof NotFound) {
         res.status(err.statusCode).send({ message: err.message });
+        return;
+      }
+      if (err.name === 'CastError') {
+        res.status(BAD_REQUEST).send({ message: 'Некорректный _id карточки' });
         return;
       }
       res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
