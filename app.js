@@ -6,7 +6,7 @@ const cardRouter = require('./routes/cards');
 
 const { statusCode } = require('./utils/constants');
 
-const { BAD_REQUEST } = statusCode;
+const { NOT_FOUND } = statusCode;
 
 const { PORT = 3000 } = process.env;
 
@@ -27,7 +27,7 @@ app.use('/', userRouter);
 app.use('/', cardRouter);
 
 app.use('*', (req, res) => {
-  res.status(BAD_REQUEST).send({ message: 'NOT FOUND' });
+  res.status(NOT_FOUND).send({ message: 'NOT FOUND' });
 });
 
 app.listen(PORT, () => {
