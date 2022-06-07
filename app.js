@@ -4,6 +4,10 @@ const bodyParser = require('body-parser');
 const userRouter = require('./routes/users');
 const cardRouter = require('./routes/cards');
 
+const { statusCode } = require('./utils/constants');
+
+const { BAD_REQUEST } = statusCode;
+
 const { PORT = 3000 } = process.env;
 
 const app = express();
@@ -16,16 +20,14 @@ app.use((req, res, next) => {
   req.user = {
     _id: '629ce9dee679d70fbe09ca46',
   };
-
   next();
 });
 
 app.use('/', userRouter);
-
 app.use('/', cardRouter);
 
 app.use('*', (req, res) => {
-  res.status(404).send({ message: 'NOT FOUND' });
+  res.status(BAD_REQUEST).send({ message: 'NOT FOUND' });
 });
 
 app.listen(PORT, () => {
