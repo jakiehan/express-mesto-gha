@@ -1,9 +1,13 @@
-/* class BadRequest extends Error {
+const codeStatus = require('../utils/constants');
+
+const { BAD_REQUEST } = codeStatus;
+
+class BadRequest extends Error {
   constructor(message) {
     super(message);
-    this.name = 'BadRequestError';
-    this.statusCode = 400;
+    this.name = 'BadRequest';
+    this.statusCode = BAD_REQUEST;
   }
 }
 
-module.exports = BadRequest; */
+module.exports = BadRequest;

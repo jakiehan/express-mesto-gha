@@ -1,16 +1,35 @@
 const router = require('express').Router();
+const { celebrate, Joi } = require('celebrate');
 const {
   getUsers,
   getUser,
-  createUser,
+  currentUser,
   setUserInfo,
   setUserAvatar,
 } = require('../controllers/users');
+const { regex } = require('../utils/constants');
+
+const { REG } = regex;
 
 router.get('/users', getUsers);
-router.get('/users/:userId', getUser);
-router.post('/users', createUser);
-router.patch('/users/me', setUserInfo);
-router.patch('/users/me/avatar', setUserAvatar);
+router.get('/users/me', currentUser);
+router.get('/users/:userId', celebrate({
+  params: Joi.object().keys({
+    userId: Joi.string().alphanum().length(24),
+  }),
+}), getUser);
+
+router.patch('/users/me', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+  }),
+}), setUserInfo);
+
+router.patch('/users/me/avatar', celebrate({
+  body: Joi.object().keys({
+    avatar: Joi.string().pattern(REG),
+  }),
+}), setUserAvatar);
 
 module.exports = router;

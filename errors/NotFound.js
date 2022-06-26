@@ -1,8 +1,12 @@
+const codeStatus = require('../utils/constants');
+
+const { NOT_FOUND } = codeStatus;
+
 class NotFound extends Error {
   constructor(message) {
     super(message);
-    this.name = 'NotFoundError';
-    this.statusCode = 404;
+    this.name = 'NotFound';
+    this.statusCode = NOT_FOUND;
   }
 }
 
