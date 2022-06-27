@@ -36,7 +36,18 @@ const createUser = (req, res, next) => {
         .then((hash) => User.create({
           name, about, avatar, email, password: hash,
         }))
-        .then((users) => res.send(users))
+        .then((newUser) => {
+          const {
+            // eslint-disable-next-line no-shadow
+            name, about, avatar, email,
+          } = newUser;
+          res.send({
+            name,
+            about,
+            avatar,
+            email,
+          });
+        })
         .catch(next);
     })
     .catch(next);
