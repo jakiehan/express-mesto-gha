@@ -40,4 +40,8 @@ const handleDeleteCard = (card, id) => {
   return card;
 };
 
-module.exports = { handleErrors, checkUserOrCard, handleDeleteCard };
+module.exports = {
+  handleErrors,
+  checkUserOrCard,
+  handleDeleteCard,
+};

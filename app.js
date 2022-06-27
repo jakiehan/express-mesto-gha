@@ -10,7 +10,6 @@ require('dotenv').config();
 
 const { login, createUser } = require('./controllers/auth');
 const auth = require('./middlewares/auth');
-
 const { handleErrors } = require('./middlewares/errors');
 
 const { codeStatus, regex } = require('./utils/constants');
@@ -24,8 +23,6 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(cookieParser());
-
-mongoose.connect('mongodb://localhost:27017/mestodb');
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
@@ -55,12 +52,14 @@ app.use('*', (req, res, next) => {
 
 app.use(errors());
 
+// eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   const error = handleErrors(err);
   const { statusCode = INTERNAL_SERVER_ERROR, message } = error;
   res.status(statusCode).send({ message: statusCode === INTERNAL_SERVER_ERROR ? 'На сервере произошла ошибка' : message });
 });
 
+mongoose.connect('mongodb://localhost:27017/mestodb');
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
 });

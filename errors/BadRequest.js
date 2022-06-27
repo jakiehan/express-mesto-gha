@@ -1,4 +1,4 @@
-const codeStatus = require('../utils/constants');
+const { codeStatus } = require('../utils/constants');
 
 const { BAD_REQUEST } = codeStatus;
 
