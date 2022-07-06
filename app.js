@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const { errors, celebrate, Joi } = require('celebrate');
 const userRouter = require('./routes/users');
@@ -11,8 +12,11 @@ require('dotenv').config();
 const { login, createUser } = require('./controllers/auth');
 const auth = require('./middlewares/auth');
 const { handleErrors } = require('./middlewares/errors');
+const limiter = require('./middlewares/rateLimit');
 
 const { codeStatus, regex } = require('./utils/constants');
+
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { INTERNAL_SERVER_ERROR } = codeStatus;
 const { REG } = regex;
@@ -23,6 +27,9 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(helmet());
+app.use(limiter);
+app.use(requestLogger);
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
@@ -45,6 +52,8 @@ app.use(auth);
 
 app.use('/', userRouter);
 app.use('/', cardRouter);
+
+app.use(errorLogger);
 
 app.use('*', (req, res, next) => {
   next(new NotFound('Not Found'));
